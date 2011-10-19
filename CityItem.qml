@@ -1,7 +1,11 @@
 import QtQuick 1.0
 
 Item {
+    id: item
+
     property alias city: cityLabel.text
+
+    signal clicked()
 
     Rectangle {
         anchors.fill: parent
@@ -31,5 +35,6 @@ Item {
     MouseArea {
         id: mouse
         anchors.fill: parent
+        onClicked: item.clicked()
     }
 }

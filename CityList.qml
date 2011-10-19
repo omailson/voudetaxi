@@ -1,47 +1,24 @@
 import QtQuick 1.0
 
-Rectangle {
-    id: root
+Column {
+    id: column
 
-    color: "#EBB701"
-    width: 360 ; height: 640
+    signal citySelected(string city);
 
-    Flickable {
-        anchors.fill: parent
-        contentWidth: width
-        contentHeight: childrenRect.height
+    height: childrenRect.height
 
-        Image {
-            id: header
-            anchors {
-                top: parent.top
-                topMargin: 20
-                horizontalCenter: parent.horizontalCenter
-            }
-            source: "logo.gif"
-        }
+    Repeater {
+        id: list
 
-        Column {
-            id: column
+        model: CityListModel { }
 
-            anchors {
-                top: header.bottom
-                left: parent.left
-                right: parent.right
-                topMargin: 10
-            }
-            height: childrenRect.height
+        delegate: CityItem {
+            width: column.width
+            height: 40
+            city: cityName
+            onClicked: {
+                citySelected(cityName);
 
-            Repeater {
-                id: list
-
-                model: CityListModel { }
-
-                delegate: CityItem {
-                    width: column.width
-                    height: 40
-                    city: cityName
-                }
             }
         }
     }
