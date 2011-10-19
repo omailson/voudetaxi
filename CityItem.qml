@@ -14,7 +14,6 @@ Item {
         id: cityLabel
         anchors {
             verticalCenter: parent.verticalCenter
-            left: parent.left
         }
         font.pixelSize: 20
     }
@@ -23,10 +22,9 @@ Item {
         height: 2
         color: "black"
         anchors {
-            top: cityLabel.bottom
             left: parent.left
             right: parent.right
-            margins: 10
+            bottom: parent.bottom
         }
     }
 
