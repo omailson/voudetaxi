@@ -4,7 +4,7 @@ Rectangle {
     id: root
 
     color: "#EBB701"
-    width: 360 ; height: 640
+    width: 360; height: 640
 
     state: "home"
 
@@ -14,8 +14,12 @@ Rectangle {
             PropertyChanges { target: flickable; contentX: 0 }
         },
         State {
-            name: "map"
+            name: "path"
             PropertyChanges { target: flickable; contentX: root.width }
+        },
+        State {
+            name: "map"
+            PropertyChanges { target: flickable; contentX: 2 * root.width }
         }
     ]
 
@@ -48,8 +52,24 @@ Rectangle {
 
         Row {
             CityList {
+                id: cityList
+
                 width: root.width
                 onCitySelected: {
+                    pathOptions.cityName = city;
+                    root.state = "path";
+                }
+            }
+
+            PathOptions {
+                id: pathOptions
+
+                width: root.width
+
+                onBackPressed: {
+                    root.state = "home";
+                }
+                onGotoMap: {
                     root.state = "map";
                 }
             }
