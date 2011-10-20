@@ -43,7 +43,8 @@ def listRide(request):
     """
     """
     rides = TaxiRide.objects.filter(accepted=False)
-    rides = [{'lng':ride.lng, 'lat': ride.lat, 'ride_id': ride.id} for ride in rides]
+    rides = [{'lng':ride.lng, 'lat': ride.lat, 'ride_id': ride.id}
+             for ride in rides]
 
     return HttpResponse('{status:"success", rides:%s}' % unicode(rides))
 
