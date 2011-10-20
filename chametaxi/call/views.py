@@ -9,6 +9,7 @@ def callTaxi(request):
     """
     """
     user_id = request.GET['user_id']
+    address = request.GET['address']
     lng = request.GET['lng']
     lat = request.GET['lat']
 
@@ -16,6 +17,7 @@ def callTaxi(request):
         user_id=user_id,
         user_lng=lng,
         user_lat=lat,
+        address=address,
         timestamp=datetime.now(),
         accepted=False,
         taxi_lng=0,
