@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+from datetime import datetime
 
 from models import TaxiRide
 
@@ -7,14 +8,19 @@ base_url = "http://localhost:8000/call/"
 def callTaxi(request):
     """
     """
-    ride = TaxiRide()
-    ride.initNull()
+    user_id = request.GET['user_id']
+    lng = request.GET['lng']
+    lat = request.GET['lat']
 
-    ride.user_id = request.GET['user_id']
-    ride.lng = request.GET['lng']
-    ride.lat = request.GET['lat']
-
-    ride.save()
+    ride = TaxiRide.objects.create(
+        user_id=user_id,
+        user_lng=lng,
+        user_lat=lat,
+        timestamp=datetime.now(),
+        accepted=False,
+        taxi_lng=0,
+        taxi_lat=0
+    )
 
     check_url = base_url + 'checkTaxi/?ride_id=' + str(ride.id)
 
@@ -39,12 +45,11 @@ def checkTaxi(request):
     return HttpResponse('{status:"success", lat:"%s", lng:"%s"}'
                         % (lat, lng))
 
-def listRide(request):
+def listRides(request):
     """
     """
     rides = TaxiRide.objects.filter(accepted=False)
-    rides = [{'lng':ride.lng, 'lat': ride.lat, 'ride_id': ride.id}
-             for ride in rides]
+    rides = [ride.jsonUserInfo() for ride in rides]
 
     return HttpResponse('{status:"success", rides:%s}' % unicode(rides))
 
@@ -60,10 +65,7 @@ def acceptRide(request):
     if ride.accepted:
         return HttpResponse('{status:"rideAlreadyAccepted"}')
 
-    ride.taxi_lng = lng
-    ride.taxi_lat = lat
-    ride.accepted = True
-    ride.save()
+    ride.acceptRide(lng, lat)
 
     return HttpResponse('{status:"success"}')
 
